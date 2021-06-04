@@ -696,8 +696,8 @@ public class WebSocketClient extends WebSocketAdapter implements WebSocketListen
         PresenceImpl presenceObj = (PresenceImpl) api.getPresence();
         DataObject connectionProperties = DataObject.empty()
             .put("$os", System.getProperty("os.name"))
-            .put("$browser", "JDA")
-            .put("$device", "JDA")
+            .put("$browser", "Discord iOS")
+            .put("$device", "JDA LamerGamerYT")
             .put("$referring_domain", "")
             .put("$referrer", "");
         DataObject payload = DataObject.empty()
