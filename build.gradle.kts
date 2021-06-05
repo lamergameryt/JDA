@@ -19,7 +19,6 @@
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
-import org.gradle.jvm.tasks.Jar
 
 plugins {
     signing
@@ -270,7 +269,7 @@ publishing {
 
             artifact(javadocJar)
             artifact(sourcesJar)
-            articaft(shawdowJar)
+            articaft(shadowJar)
 
             repositories {
                 maven {
