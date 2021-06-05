@@ -269,7 +269,7 @@ publishing {
 
             artifact(javadocJar)
             artifact(sourcesJar)
-            articaft(shadowJar)
+            artifact(shadowJar)
 
             repositories {
                 maven {
