@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.internal.interactions.ButtonImpl;
 import net.dv8tion.jda.internal.utils.Checks;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -117,6 +118,7 @@ public interface Button extends Component
      * @return New disabled button instance
      */
     @Nonnull
+    @CheckReturnValue
     default Button asDisabled()
     {
         return new ButtonImpl(getId(), getLabel(), getStyle(), getUrl(), true, getEmoji());
@@ -128,6 +130,7 @@ public interface Button extends Component
      * @return New enabled button instance
      */
     @Nonnull
+    @CheckReturnValue
     default Button asEnabled()
     {
         return new ButtonImpl(getId(), getLabel(), getStyle(), getUrl(), false, getEmoji());
@@ -142,6 +145,7 @@ public interface Button extends Component
      * @return New enabled/disabled button instance
      */
     @Nonnull
+    @CheckReturnValue
     default Button withDisabled(boolean disabled)
     {
         return new ButtonImpl(getId(), getLabel(), getStyle(), getUrl(), disabled, getEmoji());
@@ -156,6 +160,7 @@ public interface Button extends Component
      * @return New button with emoji
      */
     @Nonnull
+    @CheckReturnValue
     default Button withEmoji(@Nullable Emoji emoji)
     {
         return new ButtonImpl(getId(), getLabel(), getStyle(), getUrl(), isDisabled(), emoji);
@@ -173,6 +178,7 @@ public interface Button extends Component
      * @return New button with the changed label
      */
     @Nonnull
+    @CheckReturnValue
     default Button withLabel(@Nonnull String label)
     {
         Checks.notEmpty(label, "Label");
@@ -192,6 +198,7 @@ public interface Button extends Component
      * @return New button with the changed id
      */
     @Nonnull
+    @CheckReturnValue
     default Button withId(@Nonnull String id)
     {
         Checks.notEmpty(id, "ID");
@@ -211,6 +218,7 @@ public interface Button extends Component
      * @return New button with the changed url
      */
     @Nonnull
+    @CheckReturnValue
     default Button withUrl(@Nonnull String url)
     {
         Checks.notEmpty(url, "URL");
@@ -232,6 +240,7 @@ public interface Button extends Component
      * @return New button with the changed style
      */
     @Nonnull
+    @CheckReturnValue
     default Button withStyle(@Nonnull ButtonStyle style)
     {
         Checks.notNull(style, "Style");
@@ -538,7 +547,7 @@ public interface Button extends Component
     }
 
     /**
-     * Create a button with the provided {@link ButtonStyle style}, URL or ID, and emoji.
+     * Create a button with the provided {@link ButtonStyle style}, URL or ID, and {@link Emoji emoji}.
      * <br>The button is enabled and has no text label.
      * To use labels you can use {@code of(style, idOrUrl, label).withEmoji(emoji)}
      *
@@ -567,5 +576,42 @@ public interface Button extends Component
         Checks.notEmpty(idOrUrl, "Id");
         Checks.notLonger(idOrUrl, 100, "Id");
         return new ButtonImpl(idOrUrl, "", style, false, emoji);
+    }
+
+    /**
+     * Create an enabled button with the provided {@link ButtonStyle style}, URL or ID, label and {@link Emoji emoji}.
+     *
+     * <p>You can use {@link #asDisabled()} to disable it.
+     *
+     * <p>See {@link #link(String, String)} or {@link #primary(String, String)} for more details.
+     *
+     * @param  style
+     *         The button style
+     * @param  idOrUrl
+     *         Either the ID or URL for this button
+     * @param  label
+     *         The text to display on the button
+     * @param  emoji
+     *         The emoji to use as the button label
+     *
+     * @throws IllegalArgumentException
+     *         If any of the following scenarios occurs:
+     *         <ul>
+     *             <li>The style is null</li>
+     *             <li>You provide a URL that is null, empty or longer than 512 characters, or you provide an ID that is null, empty or longer than 100 characters</li>
+     *             <li>The label is non-null and longer than 80 characters</li>
+     *             <li>The label is null/empty, and the emoji is also null</li>
+     *         </ul>
+     *
+     * @return The button instance
+     */
+    @Nonnull
+    static Button of(@Nonnull ButtonStyle style, @Nonnull String idOrUrl, @Nullable String label, @Nullable Emoji emoji)
+    {
+        if (label != null)
+            return of(style, idOrUrl, label).withEmoji(emoji);
+        else if (emoji != null)
+            return of(style, idOrUrl, emoji);
+        throw new IllegalArgumentException("Cannot build a button without a label and emoji. At least one has to be provided as non-null.");
     }
 }

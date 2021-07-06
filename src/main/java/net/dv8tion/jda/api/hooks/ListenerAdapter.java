@@ -69,9 +69,7 @@ import net.dv8tion.jda.api.events.guild.override.PermissionOverrideUpdateEvent;
 import net.dv8tion.jda.api.events.guild.update.*;
 import net.dv8tion.jda.api.events.guild.voice.*;
 import net.dv8tion.jda.api.events.http.HttpRequestEvent;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
-import net.dv8tion.jda.api.events.interaction.GenericInteractionCreateEvent;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.*;
 import net.dv8tion.jda.api.events.message.*;
 import net.dv8tion.jda.api.events.message.guild.*;
 import net.dv8tion.jda.api.events.message.guild.react.*;
@@ -85,6 +83,12 @@ import net.dv8tion.jda.api.events.role.RoleCreateEvent;
 import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.api.events.role.update.*;
 import net.dv8tion.jda.api.events.self.*;
+import net.dv8tion.jda.api.events.stage.GenericStageInstanceEvent;
+import net.dv8tion.jda.api.events.stage.StageInstanceCreateEvent;
+import net.dv8tion.jda.api.events.stage.StageInstanceDeleteEvent;
+import net.dv8tion.jda.api.events.stage.update.GenericStageInstanceUpdateEvent;
+import net.dv8tion.jda.api.events.stage.update.StageInstanceUpdatePrivacyLevelEvent;
+import net.dv8tion.jda.api.events.stage.update.StageInstanceUpdateTopicEvent;
 import net.dv8tion.jda.api.events.user.GenericUserEvent;
 import net.dv8tion.jda.api.events.user.UserActivityEndEvent;
 import net.dv8tion.jda.api.events.user.UserActivityStartEvent;
@@ -131,47 +135,43 @@ public abstract class ListenerAdapter implements EventListener
 {
     //Deprecated/Unused events
     @Deprecated
-    @ForRemoval
+    @ForRemoval(deadline = "4.4.0")
     @DeprecatedSince("4.2.0")
     @ReplaceWith("onPermissionOverrideUpdate(), onPermissionOverrideCreate(), and onPermissionOverrideDelete()")
     public void onTextChannelUpdatePermissions(@Nonnull TextChannelUpdatePermissionsEvent event) {}
 
     @Deprecated
-    @ForRemoval
+    @ForRemoval(deadline = "4.4.0")
     @DeprecatedSince("4.2.0")
     @ReplaceWith("onPermissionOverrideUpdate(), onPermissionOverrideCreate(), and onPermissionOverrideDelete()")
     public void onStoreChannelUpdatePermissions(@Nonnull StoreChannelUpdatePermissionsEvent event) {}
 
     @Deprecated
-    @ForRemoval
+    @ForRemoval(deadline = "4.4.0")
     @DeprecatedSince("4.2.0")
     @ReplaceWith("onPermissionOverrideUpdate(), onPermissionOverrideCreate(), and onPermissionOverrideDelete()")
     public void onVoiceChannelUpdatePermissions(@Nonnull VoiceChannelUpdatePermissionsEvent event) {}
 
     @Deprecated
-    @ForRemoval
+    @ForRemoval(deadline = "4.4.0")
     @DeprecatedSince("4.2.0")
     @ReplaceWith("onPermissionOverrideUpdate(), onPermissionOverrideCreate(), and onPermissionOverrideDelete()")
     public void onCategoryUpdatePermissions(@Nonnull CategoryUpdatePermissionsEvent event) {}
 
     @Deprecated
+    @ForRemoval(deadline = "4.4.0")
     @DeprecatedSince("4.2.0")
     @ReplaceWith("onGuildMemberRemove(GuildMemberRemoveEvent)")
     public void onGuildMemberLeave(@Nonnull GuildMemberLeaveEvent event) {}
 
     @Deprecated
-    @ForRemoval
-    @DeprecatedSince("4.2.0")
-    public void onSelfUpdateEmail(@Nonnull SelfUpdateEmailEvent event) {}
-
-    @Deprecated
-    @ForRemoval
+    @ForRemoval(deadline = "4.4.0")
     @DeprecatedSince("4.2.1")
     @ReplaceWith("onResumed(ResumedEvent)")
     public void onResume(@Nonnull ResumedEvent event) {}
 
     @Deprecated
-    @ForRemoval
+    @ForRemoval(deadline = "4.4.0")
     @DeprecatedSince("4.2.1")
     @ReplaceWith("onReconnected(ReconnectedEvent)")
     public void onReconnect(@Nonnull ReconnectedEvent event) {}
@@ -193,6 +193,7 @@ public abstract class ListenerAdapter implements EventListener
     //Interaction Events
     public void onSlashCommand(@Nonnull SlashCommandEvent event) {}
     public void onButtonClick(@Nonnull ButtonClickEvent event) {}
+    public void onSelectionMenu(@Nonnull SelectionMenuEvent event) {}
 
     //Application Events
     public void onApplicationCommandUpdate(@Nonnull ApplicationCommandUpdateEvent event) {}
@@ -276,6 +277,7 @@ public abstract class ListenerAdapter implements EventListener
     public void onVoiceChannelUpdateUserLimit(@Nonnull VoiceChannelUpdateUserLimitEvent event) {}
     public void onVoiceChannelUpdateBitrate(@Nonnull VoiceChannelUpdateBitrateEvent event) {}
     public void onVoiceChannelUpdateParent(@Nonnull VoiceChannelUpdateParentEvent event) {}
+    public void onVoiceChannelUpdateRegion(@Nonnull VoiceChannelUpdateRegionEvent event) {}
     public void onVoiceChannelCreate(@Nonnull VoiceChannelCreateEvent event) {}
 
     //Category Events
@@ -297,6 +299,12 @@ public abstract class ListenerAdapter implements EventListener
     @ForRemoval(deadline = "4.4.0")
     @DeprecatedSince("4.3.0")
     public void onPrivateChannelDelete(@Nonnull PrivateChannelDeleteEvent event) {}
+
+    //StageInstance Event
+    public void onStageInstanceDelete(@Nonnull StageInstanceDeleteEvent event) {}
+    public void onStageInstanceUpdateTopic(@Nonnull StageInstanceUpdateTopicEvent event) {}
+    public void onStageInstanceUpdatePrivacyLevel(@Nonnull StageInstanceUpdatePrivacyLevelEvent event) {}
+    public void onStageInstanceCreate(@Nonnull StageInstanceCreateEvent event) {}
 
     //Guild Events
     public void onGuildReady(@Nonnull GuildReadyEvent event) {}
@@ -323,6 +331,12 @@ public abstract class ListenerAdapter implements EventListener
     public void onGuildUpdateName(@Nonnull GuildUpdateNameEvent event){}
     public void onGuildUpdateNotificationLevel(@Nonnull GuildUpdateNotificationLevelEvent event) {}
     public void onGuildUpdateOwner(@Nonnull GuildUpdateOwnerEvent event) {}
+
+    /**
+     * @deprecated This event is no longer supported by discord, use {@link #onVoiceChannelUpdateRegion(VoiceChannelUpdateRegionEvent)} instead.
+     */
+    @Deprecated
+    @ReplaceWith("VoiceChannelUpdateRegionEvent")
     public void onGuildUpdateRegion(@Nonnull GuildUpdateRegionEvent event) {}
     public void onGuildUpdateSplash(@Nonnull GuildUpdateSplashEvent event) {}
     public void onGuildUpdateVerificationLevel(@Nonnull GuildUpdateVerificationLevelEvent event) {}
@@ -364,6 +378,7 @@ public abstract class ListenerAdapter implements EventListener
     public void onGuildVoiceSelfDeafen(@Nonnull GuildVoiceSelfDeafenEvent event) {}
     public void onGuildVoiceSuppress(@Nonnull GuildVoiceSuppressEvent event) {}
     public void onGuildVoiceStream(@Nonnull GuildVoiceStreamEvent event) {}
+    public void onGuildVoiceRequestToSpeak(@Nonnull GuildVoiceRequestToSpeakEvent event) {}
 
     //Role events
     public void onRoleCreate(@Nonnull RoleCreateEvent event) {}
@@ -391,6 +406,7 @@ public abstract class ListenerAdapter implements EventListener
     //Generic Events
     public void onGenericApplicationCommand(@Nonnull GenericApplicationCommandEvent event) {}
     public void onGenericInteractionCreate(@Nonnull GenericInteractionCreateEvent event) {}
+    public void onGenericComponentInteractionCreate(@Nonnull GenericComponentInteractionCreateEvent event) {}
     public void onGenericMessage(@Nonnull GenericMessageEvent event) {}
     public void onGenericMessageReaction(@Nonnull GenericMessageReactionEvent event) {}
     public void onGenericGuildMessage(@Nonnull GenericGuildMessageEvent event) {}
@@ -408,6 +424,8 @@ public abstract class ListenerAdapter implements EventListener
     public void onGenericVoiceChannelUpdate(@Nonnull GenericVoiceChannelUpdateEvent event) {}
     public void onGenericCategory(@Nonnull GenericCategoryEvent event) {}
     public void onGenericCategoryUpdate(@Nonnull GenericCategoryUpdateEvent event) {}
+    public void onGenericStageInstance(@Nonnull GenericStageInstanceEvent event) {}
+    public void onGenericStageInstanceUpdate(@Nonnull GenericStageInstanceUpdateEvent event) {}
     public void onGenericGuild(@Nonnull GenericGuildEvent event) {}
     public void onGenericGuildUpdate(@Nonnull GenericGuildUpdateEvent event) {}
     public void onGenericGuildInvite(@Nonnull GenericGuildInviteEvent event) {}
